@@ -19,6 +19,7 @@ TODO: retrieve basic project information when OK clicked
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
 
     <script src="/js/lib/angular-1.0.0rc3.js"></script>
+    <script src="/js/lib/ngResource/resource.js"></script>
     <script src="/js/lib/jquery-1.7.1.js"></script>
     <script src="/js/lib/underscore-min.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-dropdown.js"></script>
@@ -26,7 +27,8 @@ TODO: retrieve basic project information when OK clicked
     <script src="/js/lib/bootstrap/bootstrap-button.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-tooltip.js"></script>
 
-    <!--<script src="/js/service/"></script>-->
+    <script src="/js/service/repoUrlTransformer.js"></script>
+    <script src="/js/service/repoResource.js"></script>
     <script src="/js/controller/RepoLinkageController.js"></script>
     <script src="/js/module/MainModule.js"></script>
 
@@ -39,10 +41,13 @@ TODO: retrieve basic project information when OK clicked
             <h2>Repository info:</h2>
             <ul>
                 <li>URL: {{repo.url}}</li>
+                <li>Api URL: {{repo.apiUrl}}</li>
+                <li>Homepage: {{repo.data.homepage}}</li>
             </ul>
         </div>
         <div>
             <input type="text" ng-model="repo.url" ng-model-instant />
+            <input type="button" ng-click="getRepoData()" class="btn" value="Use reposiroty"/>
         </div>
     </div>
 </div>

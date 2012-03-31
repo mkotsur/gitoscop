@@ -1,1 +1,4 @@
-angular.module('MainModule', [])
+
+angular.module('MainModule', ['ngResource'])
+    .factory('repoUrlTransformer', RepoUrlTransformerFactory)
+    .factory('repoResource', ["$resource", RepoResourceFactory]);
