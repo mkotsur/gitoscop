@@ -7,5 +7,6 @@ function RepoLinkageController($scope, repoUrlTransformer, repoResource) {
 
     $scope.getRepoData = function() {
         $scope.repo.data = repoResource.byUrl($scope.repo.apiUrl).get();
+        $scope.$digest();
     }
 }
