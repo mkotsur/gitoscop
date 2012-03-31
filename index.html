@@ -2,9 +2,12 @@
 
 <!--
 DONE: commit base
-TODO: create basic JS folders
-TODO: attach JS and CSS libs
-TODO: add field for entering github project URL
+DONE: create basic JS folders
+DONE: attach JS and CSS libs
+DONE: add field for entering github project URL
+TODO: transform repo urls of forms:
+    https://github.com/mkotsur/angular.js OR git@github.com:mkotsur/angular.js.git
+    into API url
 TODO: retrieve basic project information when OK clicked
 -->
 
@@ -24,13 +27,24 @@ TODO: retrieve basic project information when OK clicked
     <script src="/js/lib/bootstrap/bootstrap-tooltip.js"></script>
 
     <!--<script src="/js/service/"></script>-->
-    <!--<script src="/js/controller/"></script>-->
+    <script src="/js/controller/RepoLinkageController.js"></script>
     <script src="/js/module/MainModule.js"></script>
 
 </head>
 <body>
 
 <div class="container">
+    <div ng-controller="RepoLinkageController">
+        <div>
+            <h2>Repository info:</h2>
+            <ul>
+                <li>URL: {{repo.url}}</li>
+            </ul>
+        </div>
+        <div>
+            <input type="text" ng-model="repo.url" ng-model-instant />
+        </div>
+    </div>
 </div>
 
 </body>
