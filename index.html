@@ -10,7 +10,8 @@ DONE: transform repo urls of forms:
     into API url
 DONE: retrieve basic project information when OK clicked
 DONE: write e2e test for the form and establish continuous feedback
-TODO: service which will transform diff (or patch) into colorized HTML
+DONE: service which will transform diff (or patch) into colorized HTML
+TODO: display last diff (prev:HEAD) after repo is linked
 TODO: css styles for diff
 -->
 
@@ -35,6 +36,8 @@ TODO: css styles for diff
 
     <script src="/js/service/repoUrlTransformer.js"></script>
     <script src="/js/service/repoResource.js"></script>
+    <script src="/js/service/patchProcessor.js"></script>
+
     <script src="/js/controller/RepoLinkageController.js"></script>
     <script src="/js/controller/TimelineParametersController.js"></script>
     <script src="/js/module/MainModule.js"></script>
