@@ -1,6 +1,6 @@
 describe("Repo linkage controller test", function() {
 
-    var testScope, $$provide;
+    var testScope;
     var repoResourceMock;
 
     beforeEach(function() {
@@ -10,6 +10,7 @@ describe("Repo linkage controller test", function() {
         });
 
         inject(function($rootScope) {
+            $rootScope.repo = {};
             testScope = $rootScope.$new();
         });
 
@@ -25,6 +26,8 @@ describe("Repo linkage controller test", function() {
 
         expect(testScope.repo.apiUrl).toBeUndefined();
         testScope.getRepoData();
+
+        testScope.$digest();
 
         expect(testScope.repo.apiUrl).toBeDefined();
     }));
