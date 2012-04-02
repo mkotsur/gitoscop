@@ -1,5 +1,4 @@
 <!doctype html>
-
 <!--
 DONE: commit base
 DONE: create basic JS folders
@@ -11,8 +10,12 @@ DONE: transform repo urls of forms:
 DONE: retrieve basic project information when OK clicked
 DONE: write e2e test for the form and establish continuous feedback
 DONE: service which will transform diff (or patch) into colorized HTML
-TODO: display last diff (prev:HEAD) after repo is linked
-TODO: css styles for diff
+DONE: display last diff (prev:HEAD) after repo is linked
+DONE: css styles for diff
+TODO: add keyboard navigation thru commits
+TODO: refactor usage of repository resource
+TODO: fix image 404 (avatar)
+TODO: make lines marked @@ in grey color
 -->
 
 <html ng-app="MainModule" >
@@ -24,15 +27,17 @@ TODO: css styles for diff
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" href="/css/gitoscope.css" />
 
     <script src="/js/lib/angular-1.0.0rc3.js"></script>
     <script src="/js/lib/ngResource/resource.js"></script>
-    <script src="/js/lib/jquery-1.7.1.js"></script>
+    <!--<script src="/js/lib/jquery-1.7.1.js"></script>-->
     <script src="/js/lib/underscore-min.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-dropdown.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-modal.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-button.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-tooltip.js"></script>
+    <script src="/js/lib/bootstrap/bootstrap-scrollspy.js"></script>
 
     <script src="/js/service/repoUrlTransformer.js"></script>
     <script src="/js/service/repoResource.js"></script>
@@ -40,125 +45,83 @@ TODO: css styles for diff
 
     <script src="/js/controller/RepoLinkageController.js"></script>
     <script src="/js/controller/TimelineParametersController.js"></script>
+    <script src="/js/controller/DIffController.js"></script>
     <script src="/js/module/MainModule.js"></script>
 
 </head>
 <body>
 
-<div class="container-fluid" ng-init="repo={}; selection={sha: '6e1b5ab3ef1593413f1bee4e5a6e6ae7'}">
+<div class="container-fluid" ng-init="repo={}; selection={}; slideshow={};">
     <div class="row-fluid">
         <div class="span4">
-        <div ng-controller="RepoLinkageController">
-            <div>
-                <h2>Repository info:</h2>
+            <div ng-controller="RepoLinkageController">
+                <div>
+                    <h2>Repository info:</h2>
+                    <ul>
+                        <li>URL: {{repo.url}}</li>
+                        <li>Api URL: {{repo.apiUrl}}</li>
+                        <li>Homepage: {{repo.data.homepage}}</li>
+                    </ul>
+                </div>
+                <div>
+                    <input type="text" ng-model="repo.url" ng-model-instant />
+                    <input type="button" ng-click="getRepoData()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty"/>
+                </div>
+            </div>
+            <div ng-controller="TimelineParametersController" ng-show="repo.data.url">
+                <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
+                <img src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
                 <ul>
-                    <li>URL: {{repo.url}}</li>
-                    <li>Api URL: {{repo.apiUrl}}</li>
-                    <li>Homepage: {{repo.data.homepage}}</li>
+                    <li>Last updated: {{repo.data.updated_at}}</li>
+                    <li>Created at: {{repo.data.created_at}}</li>
+                    <li ng-show="repo.commits.length > 1">
+                        Recent commits:
+                        <ul ng-repeat="commit in repo.commits">
+                            <li>{{commit.author.login}}: <a href="#" ng-click="slideshow.pointer=commit.url">{{commit.sha}}</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
-            <div>
-                <input type="text" ng-model="repo.url" ng-model-instant />
-                <input type="button" ng-click="getRepoData()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty"/>
+        </div>
+
+        <div class="span8" ng-controller="DiffController">
+            <div ng-show="slideshow.commit">
+                <h3>{{slideshow.commit.sha}}</h3>
+                <h4>{{slideshow.commit.commit.message}}</h4>
+                <br/>
+            </div>
+            <div ng-show="slideshow.commit.files.length > 0">
+                <div id="diffNavBar" class="navbar navbar-static">
+                    <div class="navbar-inner">
+                        <div class="container" style="width: auto;">
+                            <a class="brand" href="#">{{slideshow.commit.commit.sha}} by {{slideshow.commit.commit.author.name}} {{slideshow.commit.commit.author.date}}</a>
+                            <ul class="nav">
+                                <li ng-repeat="file in slideshow.commit.files"><a href="#{{file.sha}}">{{file.filename}}</a></li>
+                                <!--<li class="dropdown">-->
+                                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
+                                    <!--<ul class="dropdown-menu">-->
+                                        <!--<li><a href="#one">one</a></li>-->
+                                        <!--<li><a href="#two">two</a></li>-->
+                                        <!--<li class="divider"></li>-->
+                                        <!--<li><a href="#three">three</a></li>-->
+                                    <!--</ul>-->
+                                <!--</li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div data-spy="scroll" data-target="#diffNavBar" data-offset="0" style="overflow: auto;">
+                    <div ng-repeat="file in slideshow.commit.files" id="{{file.sha}}">
+                        <h6>{{file.filename}}: {{file.status}}</h6>
+                        <div ng-bind-html-unsafe="file.patch|diffToHtml"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div ng-controller="TimelineParametersController" ng-show="repo.data.url">
-            <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
-            <img src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
-            <ul>
-                <li>Last updated: {{repo.data.updated_at}}</li>
-                <li>Created at: {{repo.data.created_at}}</li>
-                <li ng-show="repo.commits.length > 1">
-                    Recent commits:
-                    <ul ng-repeat="commit in repo.commits">
-                        <li>{{commit.author.login}}: {{commit.sha}}</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        </div>
-
-        <div class="span8">
-<pre>
-diff --git a/index.html b/index.html
-index c1d9156..7764744 100644
---- a/index.html
-+++ b/index.html
-@@ -95,7 +95,8 @@ StringStream.prototype = {
-   <script>
-     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-       lineNumbers: true,
--        autoMatchBrackets: true
-+        autoMatchBrackets: true,
-+      onGutterClick: function(x){console.log(x);}
-     });
-   </script>
- </body>
-          diff --git a/lib/codemirror.js b/lib/codemirror.js
-          index 04646a9..9a39cc7 100644
-          --- a/lib/codemirror.js
-          +++ b/lib/codemirror.js
-          @@ -399,10 +399,16 @@ var CodeMirror = (function() {
-               }
-
-               function onMouseDown(e) {
-          -      var start = posFromMouse(e), last = start;
-          +      var start = posFromMouse(e), last = start, target = e.target();
-                 if (!start) return;
-                 setCursor(start.line, start.ch, false);
-                 if (e.button() != 1) return;
-          +      if (target.parentNode == gutter) {
-          +        if (options.onGutterClick)
-          +          options.onGutterClick(indexOf(gutter.childNodes, target) + showingFrom);
-          +        return;
-          +      }
-          +
-                 if (!focused) onFocus();
-
-                 e.stop();
-          @@ -808,7 +814,7 @@ var CodeMirror = (function() {
-                 for (var i = showingFrom; i < showingTo; ++i) {
-                   var marker = lines[i].gutterMarker;
-                   if (marker) html.push('<div class="' + marker.style + '">' + htmlEscape(marker.text) + '</div>');
-          -        else html.push("<div>" + (options.lineNumbers ? i + 1 : "\u00a0") + "</div>");
-          +        else html.push("<div>" + (options.lineNumbers ? i + options.firstLineNumber : "\u00a0") + "</div>");
-                 }
-                 gutter.style.display = "none"; // TODO test whether this actually helps
-                 gutter.innerHTML = html.join("");
-          @@ -1371,10 +1377,8 @@ var CodeMirror = (function() {
-                   if (option == "parser") setParser(value);
-                   else if (option === "lineNumbers") setLineNumbers(value);
-                   else if (option === "gutter") setGutter(value);
-          -        else if (option === "readOnly") options.readOnly = value;
-          -        else if (option === "indentUnit") {options.indentUnit = indentUnit = value; setParser(options.parser);}
-          -        else if (/^(?:enterMode|tabMode|indentWithTabs|readOnly|autoMatchBrackets|undoDepth)$/.test(option)) options[option] = value;
-          -        else throw new Error("Can't set option " + option);
-          +        else if (option === "indentUnit") {options.indentUnit = value; setParser(options.parser);}
-          +        else options[option] = value;
-                 },
-                 cursorCoords: cursorCoords,
-                 undo: operation(undo),
-          @@ -1402,7 +1406,8 @@ var CodeMirror = (function() {
-                 replaceRange: operation(replaceRange),
-
-                 operation: function(f){return operation(f)();},
-          -      refresh: function(){updateDisplay([{from: 0, to: lines.length}]);}
-          +      refresh: function(){updateDisplay([{from: 0, to: lines.length}]);},
-          +      getInputField: function(){return input;}
-               };
-               return instance;
-             }
-          @@ -1420,6 +1425,7 @@ var CodeMirror = (function() {
-               readOnly: false,
-               onChange: null,
-               onCursorActivity: null,
-          +    onGutterClick: null,
-               autoMatchBrackets: false,
-               workTime: 200,
-               workDelay: 300,
-</pre>
-            </div>
-        </div>
+        <script type="text/javascript">
+            $('#diffNavBar').scrollspy()
+        </script>
+    </div>
 </div>
 
 

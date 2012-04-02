@@ -1,19 +1,17 @@
-var PatchProcessorFactory = function() {
-    return new function() {
-        this.toHtml = function(patchCode) {
+var PatchProcessorFactory = function($sanitize) { return function(diff) {
 
-            var code = "";
+    var code = "";
 
-            angular.forEach(
-                patchCode.split("\n"),
-                function(v, k){
-                    code += "<code";
-                    if (v.indexOf("+") == 0) code += " class=\"add\"";
-                    if (v.indexOf("-") == 0) code += " class=\"rm\"";
-                    code += ">" + v + "</code>\n";
+    angular.forEach(
+        diff.split("\n"),
+        function(v, k){
+            code += "<code";
+            if (v.indexOf("+") == 0) code += " class=\"add\"";
+            if (v.indexOf("-") == 0) code += " class=\"rm\"";
+            code += ">" + angular.element("<div/>").text(v).html() + "</code>\n";
 
-                });
-            return '<pre>\n' + code + '</pre>';
-        }
-    }
-}
+        });
+    return '<pre>\n' + code + '</pre>';
+}};
+
+PatchProcessorFactory.$inject = ['$sanitize'];

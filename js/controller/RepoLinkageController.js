@@ -1,4 +1,6 @@
-function RepoLinkageController($scope, repoUrlTransformer, repoResource) {
+function RepoLinkageController($scope, $location, repoUrlTransformer, repoResource) {
+
+    $scope.repo.url = $location.hash();
 
     $scope.$watch('repo.url', function() {
         $scope.repo.apiUrl = repoUrlTransformer.toRepoApiResource($scope.repo.url);

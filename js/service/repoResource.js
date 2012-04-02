@@ -5,6 +5,9 @@ var RepoResourceFactory = function($resource) {
         },
         'commitsByUrl': function(url) {
             return $resource(url + "/commits/");
+        },
+        'commitByUrl': function(url) {
+            return $resource(url);
         }
     }
 
