@@ -12,9 +12,10 @@ DONE: write e2e test for the form and establish continuous feedback
 DONE: service which will transform diff (or patch) into colorized HTML
 DONE: display last diff (prev:HEAD) after repo is linked
 DONE: css styles for diff
+DONE: fix image 404 (avatar)
+TODO: improve e2e tests coverage
 TODO: add keyboard navigation thru commits
 TODO: refactor usage of repository resource
-TODO: fix image 404 (avatar)
 TODO: make lines marked @@ in grey color
 -->
 
@@ -31,7 +32,8 @@ TODO: make lines marked @@ in grey color
 
     <script src="/js/lib/angular-1.0.0rc3.js"></script>
     <script src="/js/lib/ngResource/resource.js"></script>
-    <!--<script src="/js/lib/jquery-1.7.1.js"></script>-->
+    <script src="/js/lib/jquery-1.7.1.js"></script>
+    <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
     <script src="/js/lib/underscore-min.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-dropdown.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-modal.js"></script>
@@ -70,7 +72,7 @@ TODO: make lines marked @@ in grey color
             </div>
             <div ng-controller="TimelineParametersController" ng-show="repo.data.url">
                 <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
-                <img src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
+                <img ng-src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
                 <ul>
                     <li>Last updated: {{repo.data.updated_at}}</li>
                     <li>Created at: {{repo.data.created_at}}</li>
@@ -119,7 +121,7 @@ TODO: make lines marked @@ in grey color
             </div>
         </div>
         <script type="text/javascript">
-            $('#diffNavBar').scrollspy()
+            $('#diffNavBar').scrollspy();
         </script>
     </div>
 </div>
