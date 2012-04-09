@@ -14,7 +14,8 @@ DONE: display last diff (prev:HEAD) after repo is linked
 DONE: css styles for diff
 DONE: fix image 404 (avatar)
 DONE: improve e2e tests coverage
-TODO: add links to navigate thru commits
+DONE: add links to navigate thru commits
+TODO: rename all controllers to Ctrl suffix
 TODO: URLs: / and /index.html should work identically with good resolution of # value
 TODO: add keyboard navigation thru commits
 TODO: refactor usage of repository resource
@@ -51,6 +52,7 @@ TODO: figure out what happens when commit list is not complete
     <script src="/js/controller/RepoLinkageController.js"></script>
     <script src="/js/controller/TimelineParametersController.js"></script>
     <script src="/js/controller/DIffController.js"></script>
+    <script src="/js/controller/CommitsNavigatorCtrl.js"></script>
     <script src="/js/module/MainModule.js"></script>
 
     <script src="/js/lib/angular-mocks.js"></script>
@@ -58,7 +60,7 @@ TODO: figure out what happens when commit list is not complete
 </head>
 <body>
 
-<div class="container-fluid" ng-init="repo={}; selection={}; slideshow={};">
+<div class="container-fluid" ng-init="repo={}; slideshow={};">
     <div class="row-fluid">
         <div class="span4">
             <div ng-controller="RepoLinkageController">
@@ -75,6 +77,10 @@ TODO: figure out what happens when commit list is not complete
                     <input type="button" ng-click="getRepoData()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty"/>
                 </div>
             </div>
+            <div ng-controller="CommitsNavigatorCtrl">
+                <a href="#" ng-show="previousRevision" ng-click="goPrevious()">Previous</a>
+                <a href="#" ng-show="nextRevision" ng-click="goNext()">Next</a>
+            </div>
             <div ng-controller="TimelineParametersController" ng-show="repo.data.url">
                 <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
                 <img ng-src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
@@ -84,7 +90,11 @@ TODO: figure out what happens when commit list is not complete
                     <li class="commits" ng-show="repo.commits.length > 1">
                         Recent commits:
                         <ul ng-repeat="commit in repo.commits">
-                            <li>{{commit.author.login}}: <a href="#" ng-click="slideshow.pointer=commit.url">{{commit.sha}}</a></li>
+                            <li>
+                                {{commit.author.login}}:
+                                <span style="background-color: red" ng-show="slideshow.pointer == commit.sha">{{commit.sha}}</span>
+                                <span ng-hide="slideshow.pointer == commit.sha"><a href="#" ng-click="slideshow.pointer=commit.sha">{{commit.sha}}</a></span>
+                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -30,5 +30,6 @@ describe("Repo linkage controller test", function() {
         testScope.$digest();
 
         expect(testScope.repo.apiUrl).toBeDefined();
+        expect(testScope.repo.data).toBeDefined();
     }));
 });

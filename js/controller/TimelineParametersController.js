@@ -8,7 +8,7 @@ function TimelineParametersController($scope, repoUrlTransformer, repoResource) 
 
     $scope.$watch('repo.commits.length > 1', function() {
         if ($scope.repo.commits && $scope.repo.commits.length > 0) {
-            $scope.slideshow.pointer = $scope.repo.commits[0].url;
+            $scope.slideshow.pointer = $scope.repo.commits[0].sha;
         }
     })
 }

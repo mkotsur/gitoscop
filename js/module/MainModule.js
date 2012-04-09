@@ -19,6 +19,4 @@ angular.module('MainModuleDev', ['MainModule', 'ngMockE2E']).run(function($httpB
         $resource("/js/spec/mocks/commits.json").query()
     );
     $httpBackend.whenGET(/.*/).passThrough();
-
-
 });
