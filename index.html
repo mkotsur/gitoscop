@@ -13,13 +13,16 @@ DONE: service which will transform diff (or patch) into colorized HTML
 DONE: display last diff (prev:HEAD) after repo is linked
 DONE: css styles for diff
 DONE: fix image 404 (avatar)
-TODO: improve e2e tests coverage
+DONE: improve e2e tests coverage
+TODO: add links to navigate thru commits
+TODO: URLs: / and /index.html should work identically with good resolution of # value
 TODO: add keyboard navigation thru commits
 TODO: refactor usage of repository resource
 TODO: make lines marked @@ in grey color
+TODO: figure out what happens when commit list is not complete
 -->
 
-<html ng-app="MainModule" >
+<html ng-app="MainModuleDev" >
 
 <head>
     <title>GitoScoop</title>
@@ -56,6 +59,8 @@ font-weight: normal;
 }
 </style>
 
+    <script src="/js/lib/angular-mocks.js"></script>
+
 </head>
 <body>
 
@@ -75,6 +80,7 @@ font-weight: normal;
                   </form>
                 </div>
             </div>
+
         </center>           
     </div>
 </div>
