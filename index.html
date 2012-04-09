@@ -13,13 +13,16 @@ DONE: service which will transform diff (or patch) into colorized HTML
 DONE: display last diff (prev:HEAD) after repo is linked
 DONE: css styles for diff
 DONE: fix image 404 (avatar)
-TODO: improve e2e tests coverage
+DONE: improve e2e tests coverage
+TODO: add links to navigate thru commits
+TODO: URLs: / and /index.html should work identically with good resolution of # value
 TODO: add keyboard navigation thru commits
 TODO: refactor usage of repository resource
 TODO: make lines marked @@ in grey color
+TODO: figure out what happens when commit list is not complete
 -->
 
-<html ng-app="MainModule" >
+<html ng-app="MainModuleDev" >
 
 <head>
     <title>GitoScop</title>
@@ -50,6 +53,8 @@ TODO: make lines marked @@ in grey color
     <script src="/js/controller/DIffController.js"></script>
     <script src="/js/module/MainModule.js"></script>
 
+    <script src="/js/lib/angular-mocks.js"></script>
+
 </head>
 <body>
 
@@ -76,7 +81,7 @@ TODO: make lines marked @@ in grey color
                 <ul>
                     <li>Last updated: {{repo.data.updated_at}}</li>
                     <li>Created at: {{repo.data.created_at}}</li>
-                    <li ng-show="repo.commits.length > 1">
+                    <li class="commits" ng-show="repo.commits.length > 1">
                         Recent commits:
                         <ul ng-repeat="commit in repo.commits">
                             <li>{{commit.author.login}}: <a href="#" ng-click="slideshow.pointer=commit.url">{{commit.sha}}</a></li>
