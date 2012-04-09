@@ -126,7 +126,7 @@ TODO: make lines marked @@ in grey color
                       {{file.filename}}: {{file.status}}
                 </a> 
                     </div>               
-                        <div class="accordion-body collapse"  id="{{escape(file.filename)}}" >     
+                        <div class="accordion-body in"  id="{{escape(file.filename)}}" >     
                             <div class="accordion-inner" ng-bind-html-unsafe="file.patch|diffToHtml"></div>
                         </div>
                     </div>
