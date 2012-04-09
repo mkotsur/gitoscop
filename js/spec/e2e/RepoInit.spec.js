@@ -4,7 +4,7 @@ describe("Repository linking case of app", function() {
 
     beforeEach(function() {
         repoLinkageButton = using(
-            'div[ng-controller="RepoLinkageController"]',
+            'div[ng-controller="RepoInitCtrl"]',
             "Repo linkage controler"
         ).element('input[type="button"]');
 

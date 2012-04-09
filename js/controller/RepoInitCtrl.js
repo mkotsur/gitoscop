@@ -1,4 +1,4 @@
-function RepoLinkageController($scope, $location, repoUrlTransformer, repoResource) {
+function RepoInitCtrl($scope, $location, repoUrlTransformer, repoResource) {
 
     $scope.repo.url = $location.hash();
 

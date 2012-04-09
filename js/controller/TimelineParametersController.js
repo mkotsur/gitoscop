@@ -1,4 +1,4 @@
-function TimelineParametersController($scope, repoUrlTransformer, repoResource) {
+function TimelineParametersController($scope, repoResource) {
 
     $scope.$watch('repo.data.url', function() {
         if ($scope.repo.data && $scope.repo.data.url) {

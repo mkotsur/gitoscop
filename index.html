@@ -49,7 +49,7 @@ TODO: figure out what happens when commit list is not complete
     <script src="/js/service/repoResource.js"></script>
     <script src="/js/service/patchProcessor.js"></script>
 
-    <script src="/js/controller/RepoLinkageController.js"></script>
+    <script src="/js/controller/RepoInitCtrl.js"></script>
     <script src="/js/controller/TimelineParametersController.js"></script>
     <script src="/js/controller/DIffController.js"></script>
     <script src="/js/controller/CommitsNavigatorCtrl.js"></script>
@@ -63,7 +63,7 @@ TODO: figure out what happens when commit list is not complete
 <div class="container-fluid" ng-init="repo={}; slideshow={};">
     <div class="row-fluid">
         <div class="span4">
-            <div ng-controller="RepoLinkageController">
+            <div ng-controller="RepoInitCtrl">
                 <div>
                     <h2>Repository info:</h2>
                     <ul>

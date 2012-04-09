@@ -20,7 +20,7 @@ describe("Repo linkage controller test", function() {
 
         repoResourceMock.byUrl = function() {return{'get': function() {return "test"}}};
 
-        $controller(RepoLinkageController, {$scope: testScope});
+        $controller(RepoInitCtrl, {$scope: testScope});
 
         testScope.repo.url = "http://google.com";
 

@@ -19,7 +19,7 @@ describe("Case of navigation thru commits", function() {
 
     beforeEach(function() {
         repoLinkageButton = using(
-            'div[ng-controller="RepoLinkageController"]',
+            'div[ng-controller="RepoInitCtrl"]',
             "Repo linkage controler"
         ).element('input[type="button"]');
     })
