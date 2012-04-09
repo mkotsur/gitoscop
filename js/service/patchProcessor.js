@@ -1,5 +1,8 @@
 var PatchProcessorFactory = function($sanitize) { return function(diff) {
 
+    if (!diff) {
+      return;
+    }
     var code = "";
 
     angular.forEach(

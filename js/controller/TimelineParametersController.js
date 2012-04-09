@@ -11,4 +11,5 @@ function TimelineParametersController($scope, repoUrlTransformer, repoResource) 
             $scope.slideshow.pointer = $scope.repo.commits[0].url;
         }
     })
+
 }

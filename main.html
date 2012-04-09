@@ -1,0 +1,140 @@
+<!doctype html>
+<!--
+DONE: commit base
+DONE: create basic JS folders
+DONE: attach JS and CSS libs
+DONE: add field for entering github project URL
+DONE: transform repo urls of forms:
+    https://github.com/mkotsur/angular.js OR git@github.com:mkotsur/angular.js.git
+    into API url
+DONE: retrieve basic project information when OK clicked
+DONE: write e2e test for the form and establish continuous feedback
+DONE: service which will transform diff (or patch) into colorized HTML
+DONE: display last diff (prev:HEAD) after repo is linked
+DONE: css styles for diff
+DONE: fix image 404 (avatar)
+TODO: improve e2e tests coverage
+TODO: add keyboard navigation thru commits
+TODO: refactor usage of repository resource
+TODO: make lines marked @@ in grey color
+-->
+
+<html ng-app="MainModule" >
+
+<head>
+    <title>GitoScoop</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+    
+    <link rel="stylesheet" href="/css/gitoscope.css" />
+
+    <script src="/js/lib/angular-1.0.0rc3.js"></script>
+    <script src="/js/lib/ngResource/resource.js"></script>
+    <script src="/js/lib/jquery-1.7.1.js"></script>
+    <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
+    <script src="/js/lib/underscore-min.js"></script>
+    <script src="/js/lib/bootstrap/bootstrap-dropdown.js"></script>
+    <script src="/js/lib/bootstrap/bootstrap-modal.js"></script>
+    <script src="/js/lib/bootstrap/bootstrap-button.js"></script>
+    <script src="/js/lib/bootstrap/bootstrap-tooltip.js"></script>
+    <script src="/js/lib/bootstrap/bootstrap-collapse.js"></script>
+
+    <script src="/js/service/repoUrlTransformer.js"></script>
+    <script src="/js/service/repoResource.js"></script>
+    <script src="/js/service/patchProcessor.js"></script>
+
+    <script src="/js/controller/RepoLinkageController.js"></script>
+    <script src="/js/controller/TimelineParametersController.js"></script>
+    <script src="/js/controller/DIffController.js"></script>
+    <script src="/js/module/MainModule.js"></script>
+
+</head>
+<body>
+
+<div class="container-fluid" ng-init="repo={}; selection={}; slideshow={};">
+    <div class="row-fluid">
+        <div class="span4">
+            <div ng-controller="RepoLinkageController">
+                <div>
+                    <h2>Repository info:</h2>
+                    <ul>
+                        <li>URL: {{repo.url}}</li>
+                        <li>Api URL: {{repo.apiUrl}}</li>
+                        <li>Homepage: {{repo.data.homepage}}</li>
+                    </ul>
+                </div>
+                <div>
+                    <input type="text" ng-model="repo.url" ng-model-instant />
+                    <input type="button" ng-click="getRepoData()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty" style="vertical-align:top;"/>
+                </div>
+            </div>
+            <div ng-controller="TimelineParametersController" ng-show="repo.data.url">
+                <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
+                <img ng-src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
+                <ul>
+                    <li>Last updated: {{repo.data.updated_at}}</li>
+                    <li>Created at: {{repo.data.created_at}}</li>
+                    <li ng-show="repo.commits.length > 1">
+                        Recent commits:
+                        <ul ng-repeat="commit in repo.commits">
+                            <li>{{commit.author.login}}: <a href="#" ng-click="slideshow.pointer=commit.url">{{commit.sha}}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span8" ng-controller="DiffController">
+            <div ng-show="slideshow.commit.files.length > 0">
+                <div id="NavList" class="navbar navbar-static">
+                    <div class="navbar-inner">
+                        <div class="container" style="width: auto;">
+
+                            <a class="brand" href="#">{{slideshow.commit.commit.sha}} by {{slideshow.commit.commit.author.name}} {{slideshow.commit.commit.author.date}}</a>
+
+                        <div ng-show="slideshow.commit" class="nav" style="width:100%">
+                           
+                            <h3>{{slideshow.commit.sha}}</h3>
+                            <h4>{{slideshow.commit.commit.message}}</h4>
+                            <br/>
+                        </div>
+<!--                            <div>
+                              <ul class="nav">
+                                  <li ng-repeat="file in slideshow.commit.files"><a href="#{{file.filename}}">{{file.filename}}</a></li>
+                                  <!--<li class="dropdown">-->
+                                      <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
+                                      <!--<ul class="dropdown-menu">-->
+                                          <!--<li><a href="#one">one</a></li>-->
+                                          <!--<li><a href="#two">two</a></li>-->
+                                          <!--<li class="divider"></li>-->
+                                          <!--<li><a href="#three">three</a></li>-->
+                                      <!--</ul>-->
+                                  <!--</li>
+</ul>
+                              
+                         </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion" id="filesList">
+                    <div class="accordion-group" ng-repeat="file in slideshow.commit.files">                        
+                    <div class="accordion-heading">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#filesList" href="#{{escape(file.filename)}}">
+                      {{file.filename}}: {{file.status}}
+                </a> 
+                    </div>               
+                        <div class="accordion-body collapse"  id="{{escape(file.filename)}}" >     
+                            <div class="accordion-inner" ng-bind-html-unsafe="file.patch|diffToHtml"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
