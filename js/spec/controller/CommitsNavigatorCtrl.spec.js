@@ -49,9 +49,10 @@ describe("Commits navigation controller test", function() {
 
         $controller(CommitsNavigatorCtrl, {$scope: testScope});
 
-        testScope.slideshow.pointer = 'second-commit-hash';
         testScope.repo.commits = twoCommitsMock;
+        testScope.$digest();
 
+        testScope.slideshow.pointer = 'second-commit-hash';
         testScope.$digest();
 
         expect(testScope.previousRevision).not.toBeNull();
@@ -67,9 +68,11 @@ describe("Commits navigation controller test", function() {
 
         $controller(CommitsNavigatorCtrl, {$scope: testScope});
 
-        testScope.slideshow.pointer = 'second-commit-hash';
-        testScope.repo.commits = fourCommitsMock;
 
+        testScope.repo.commits = fourCommitsMock;
+        testScope.$digest();
+
+        testScope.slideshow.pointer = 'second-commit-hash';
         testScope.$digest();
 
         expect(testScope.previousRevision).toBe('first-commit-hash');

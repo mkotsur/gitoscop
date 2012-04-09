@@ -3,6 +3,12 @@ function CommitsNavigatorCtrl($scope) {
     $scope.nextRevision = null;
     $scope.previousRevision = null;
 
+    $scope.$watch('repo.commits.length > 1', function() {
+        if ($scope.repo.commits && $scope.repo.commits.length > 0) {
+            $scope.slideshow.pointer = $scope.repo.commits[0].sha;
+        }
+    });
+
     $scope.$watch('slideshow.pointer', function() {
         if (!$scope.slideshow.pointer || !$scope.repo.commits) {
             return;

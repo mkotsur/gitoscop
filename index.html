@@ -50,8 +50,7 @@ TODO: figure out what happens when commit list is not complete
     <script src="/js/service/patchProcessor.js"></script>
 
     <script src="/js/controller/RepoInitCtrl.js"></script>
-    <script src="/js/controller/TimelineParametersController.js"></script>
-    <script src="/js/controller/DIffController.js"></script>
+    <script src="/js/controller/DIffCtrl.js"></script>
     <script src="/js/controller/CommitsNavigatorCtrl.js"></script>
     <script src="/js/module/MainModule.js"></script>
 
@@ -81,7 +80,7 @@ TODO: figure out what happens when commit list is not complete
                 <a href="#" ng-show="previousRevision" ng-click="goPrevious()">Previous</a>
                 <a href="#" ng-show="nextRevision" ng-click="goNext()">Next</a>
             </div>
-            <div ng-controller="TimelineParametersController" ng-show="repo.data.url">
+            <div ng-controller="CommitsNavigatorCtrl" ng-show="repo.data.url">
                 <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
                 <img ng-src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
                 <ul>
@@ -101,7 +100,7 @@ TODO: figure out what happens when commit list is not complete
             </div>
         </div>
 
-        <div class="span8" ng-controller="DiffController">
+        <div class="span8" ng-controller="DiffCtrl">
             <div ng-show="slideshow.commit">
                 <h3>{{slideshow.commit.sha}}</h3>
                 <h4>{{slideshow.commit.commit.message}}</h4>
