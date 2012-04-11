@@ -1,4 +1,6 @@
-[
+var gitoscop = gitoscop ? gitoscop : {'mock': {}}
+
+gitoscop.mock.commits = [
   {
     "author": {
       "avatar_url": "https://secure.gravatar.com/avatar/d59bdceef864e67df13167d806d6da63?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png",

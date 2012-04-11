@@ -12,15 +12,15 @@ describe("Repository linking case of app", function() {
 
 
     it("should take repo URL from hash", function() {
-        browser().navigateTo("/index.html?url=https://api.github.com/repos/e2e/test");
+        browser().navigateTo("/main.html?url=https://api.github.com/repos/e2e/test");
         expect(binding('repo.url')).toEqual('https://api.github.com/repos/e2e/test');
         expect(binding('repo.apiUrl')).toEqual('https://api.github.com/repos/e2e/test');
-        sleep(1)
+        sleep(0.4)
         expect(repeater(".commits ul", "List of commits").count()).toEqual(2);
     });
 
     it("should open the page, enter repo url and download repo information", function() {
-        browser().navigateTo("/index.html");
+        browser().navigateTo("/main.html");
 
         expect(repoLinkageButton.attr('disabled')).toBeTruthy();
 
@@ -31,7 +31,7 @@ describe("Repository linking case of app", function() {
         expect(repoLinkageButton.attr('disabled')).toBeFalsy();
 
         repoLinkageButton.click();
-        sleep(1)
+        sleep(0.4)
 
         expect(repeater(".commits ul", "List of commits").count()).toEqual(2);
 

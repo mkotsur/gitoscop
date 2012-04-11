@@ -16,10 +16,10 @@ function RepoInitCtrl($scope, $location, repoUrlTransformer, repoResource) {
     });
 
     $scope.getRepoData = function() {
-        setTimeout(function() {
-            console.log('ttt')
-            $scope.repo.data = repoResource.byUrl($scope.repo.apiUrl).get();
-        }, 500)
-
+        $scope.repo.data = repoResource.byUrl($scope.repo.apiUrl).get();
     };
+
+    $scope.redirectToMainPage = function () {
+       window.location = "/main.html?url=" + $scope.repo.url;
+    }
 }

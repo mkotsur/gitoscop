@@ -1,4 +1,6 @@
-{
+var gitoscop = gitoscop ? gitoscop : {'mock': {}}
+
+gitoscop.mock.repo = {
     "watchers": 1,
     "pushed_at": "2012-04-01T16:10:49Z",
     "source": {

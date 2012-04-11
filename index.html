@@ -23,15 +23,16 @@ TODO: make lines marked @@ in grey color
 TODO: figure out what happens when commit list is not complete
 -->
 
-<html ng-app="MainModuleDev" >
+<html ng-app="MainModuleDev">
 
 <head>
-    <title>GitoScop</title>
+    <title>GitoScoop</title>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+
     <link rel="stylesheet" href="/css/gitoscope.css" />
 
     <script src="/js/lib/angular-1.0.0rc3.js"></script>
@@ -39,8 +40,6 @@ TODO: figure out what happens when commit list is not complete
     <script src="/js/lib/jquery-1.7.1.js"></script>
     <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
     <script src="/js/lib/underscore-min.js"></script>
-    <script src="/js/lib/bootstrap/bootstrap-dropdown.js"></script>
-    <script src="/js/lib/bootstrap/bootstrap-modal.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-button.js"></script>
     <script src="/js/lib/bootstrap/bootstrap-tooltip.js"></script>
 
@@ -48,10 +47,25 @@ TODO: figure out what happens when commit list is not complete
     <script src="/js/service/repoResource.js"></script>
     <script src="/js/service/patchProcessor.js"></script>
 
+
     <script src="/js/controller/RepoInitCtrl.js"></script>
     <script src="/js/controller/DIffCtrl.js"></script>
     <script src="/js/controller/CommitsNavigatorCtrl.js"></script>
+
+    <script src="/js/spec/mocks/commits.js"></script>
+    <script src="/js/spec/mocks/repo.js"></script>
+
     <script src="/js/module/MainModule.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Chau+Philomene+One' rel='stylesheet' type='text/css'>
+
+
+    <style type="text/css">
+        .header {
+            font-family: 'Chau Philomene One', sans-serif;
+            font-size: 35px;
+            font-weight: normal;
+        }
+    </style>
 
     <script src="/js/lib/angular-mocks.js"></script>
 
@@ -60,83 +74,21 @@ TODO: figure out what happens when commit list is not complete
 
 <div class="container-fluid" ng-init="repo={}; slideshow={};">
     <div class="row-fluid">
-        <div class="span4">
-            <div ng-controller="RepoInitCtrl">
-                <div>
-                    <h2>Repository info:</h2>
-                    <ul>
-                        <li>URL: {{repo.url}}</li>
-                        <li>Api URL: {{repo.apiUrl}}</li>
-                        <li>Homepage: {{repo.data.homepage}}</li>
-                    </ul>
-                </div>
-                <div>
-                    <input type="text" ng-model="repo.url" ng-model-instant />
-                    <input type="button" ng-click="getRepoData()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty"/>
-                </div>
-            </div>
-            <div ng-controller="CommitsNavigatorCtrl">
-                <a href="#" ng-show="previousRevision" ng-click="goPrevious()">Previous</a>
-                <a href="#" ng-show="nextRevision" ng-click="goNext()">Next</a>
-            </div>
-            <div ng-controller="CommitsNavigatorCtrl" ng-show="repo.data.url">
-                <h2>Timeline for: <a href="{{repo.data.url}}">{{repo.data.owner.login}}/{{repo.data.name}}</a></h2>
-                <img ng-src="{{repo.data.owner.avatar_url}}" ng-show="repo.data.owner.avatar_url"/>
-                <ul>
-                    <li>Last updated: {{repo.data.updated_at}}</li>
-                    <li>Created at: {{repo.data.created_at}}</li>
-                    <li class="commits" ng-show="repo.commits.length > 1">
-                        Recent commits:
-                        <ul ng-repeat="commit in repo.commits">
-                            <li>
-                                {{commit.author.login}}:
-                                <span style="background-color: red" ng-show="slideshow.pointer == commit.sha">{{commit.sha}}</span>
-                                <span ng-hide="slideshow.pointer == commit.sha"><a href="#" ng-click="slideshow.pointer=commit.sha">{{commit.sha}}</a></span>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="span8" ng-controller="DiffCtrl">
-            <div ng-show="slideshow.commit">
-                <h3>{{slideshow.commit.sha}}</h3>
-                <h4>{{slideshow.commit.commit.message}}</h4>
-                <br/>
-            </div>
-            <div ng-show="slideshow.commit.files.length > 0">
-                <div id="diffNavBar" class="navbar navbar-static">
-                    <div class="navbar-inner">
-                        <div class="container" style="width: auto;">
-                            <a class="brand" href="#">{{slideshow.commit.commit.sha}} by {{slideshow.commit.commit.author.name}} {{slideshow.commit.commit.author.date}}</a>
-                            <ul class="nav">
-                                <li ng-repeat="file in slideshow.commit.files"><a href="#{{file.sha}}">{{file.filename}}</a></li>
-                                <!--<li class="dropdown">-->
-                                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
-                                    <!--<ul class="dropdown-menu">-->
-                                        <!--<li><a href="#one">one</a></li>-->
-                                        <!--<li><a href="#two">two</a></li>-->
-                                        <!--<li class="divider"></li>-->
-                                        <!--<li><a href="#three">three</a></li>-->
-                                    <!--</ul>-->
-                                <!--</li>-->
-                            </ul>
-                        </div>
-                    </div>
+        <div class="span12" style="top:30%;position:absolute; text-align: center;">
+            <div ng-controller="RepoInitCtrl">
+                <div style="margin: 20px auto 15px auto">
+                    <img src="/images/tv.png" alt="logo"/>
+                    <h2 class="header">Enter Repository Url:</h2>
                 </div>
-                <div data-spy="scroll" data-target="#diffNavBar" data-offset="0" style="overflow: auto;">
-                    <div ng-repeat="file in slideshow.commit.files" id="{{file.sha}}">
-                        <h6>{{file.filename}}: {{file.status}}</h6>
-                        <div ng-bind-html-unsafe="file.patch|diffToHtml"></div>
-                    </div>
+                <div>
+                    <input class="input-xlarge" type="text" name="url" ng-model="repo.url" ng-model-instant />
+                    <input type="button" ng-click="redirectToMainPage()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty" style="vertical-align:top;margin-left: 5px;"/>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 </body>
 </html>

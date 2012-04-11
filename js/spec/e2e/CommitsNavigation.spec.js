@@ -20,15 +20,15 @@ describe("Case of navigation thru commits", function() {
     })
 
     it("should mark last commit as active when repository is just loaded", function() {
-        browser().navigateTo("/index.html?url=https://api.github.com/repos/e2e/test");
-        sleep(1)
+        browser().navigateTo("/main.html?url=https://api.github.com/repos/e2e/test");
+        sleep(0.8)
         expect(usingCommitsList().element("a:visible:first").text()).toEqual("428f2b563663315df4f235ca19cef4bdcf82e2ab");
         expect(usingCommitsList().element("span:visible:first").text()).toEqual("15c1fe392942b70e456f10afbdfd9c3329249a43");
     });
 
     it("should display link next commit when first commit is selected", function() {
-        browser().navigateTo("/index.html?url=https://api.github.com/repos/e2e/test");
-        sleep(1)
+        browser().navigateTo("/main.html?url=https://api.github.com/repos/e2e/test");
+        sleep(0.8)
         expect(visibleNextLink().count()).toBe(1);
         expect(visiblePrevLink().count()).toBe(0);
     })
