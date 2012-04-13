@@ -1,11 +1,14 @@
-angular.module('MainModule', ['ngResource'])
+angular.module('MainModule', ['ngResource', 'ngSanitize'])
     .factory('repoUrlTransformer', RepoUrlTransformerFactory)
     .factory('patchProcessor', PatchProcessorFactory)
     .factory('repoResource', ["$resource", RepoResourceFactory])
     .filter('diffToHtml', PatchProcessorFactory)
-    .config(function($locationProvider) {
-        $locationProvider.hashPrefix("");
-        $locationProvider.html5Mode(true);
+    .config(function($locationProvider, $routeProvider) {
+        $locationProvider.hashPrefix("!");
+//        $locationProvider.html5Mode(true);
+        $routeProvider.when('/', {template: './js/templates/index.html', controller:RepoInitCtrl});
+        $routeProvider.when('/slideshow', {template: './js/templates/slideshow.html'});
+
     });
 
 
