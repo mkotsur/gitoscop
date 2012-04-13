@@ -17,7 +17,7 @@ describe("Case of navigation thru commits", function() {
     };
 
     beforeEach(function() {
-    })
+    });
 
     it("should mark last commit as active when repository is just loaded", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
@@ -28,8 +28,12 @@ describe("Case of navigation thru commits", function() {
 
     it("should display link next commit when first commit is selected", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
-        sleep(0.8)
         expect(visibleNextLink().count()).toBe(1);
         expect(visiblePrevLink().count()).toBe(0);
-    })
+    });
+
+    it("should display commit id when swiching commits", function() {
+        browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
+
+    });
 })
