@@ -1,42 +1,25 @@
 describe("Case of navigation thru commits", function() {
 
-    var usingCommitsList = function() {
-        return using('.commits ul', "List of commits");
-    }
-
-    var usingCommitsNavigator = function() {
-        return using('*[ng-controller=CommitsNavigatorCtrl]');
-    }
-
-    var visibleNextLink = function() {
-        return usingCommitsNavigator().element('*[ng-show="nextRevision"]:visible');
-    };
-
-    var visiblePrevLink = function() {
-        return usingCommitsNavigator().element('*[ng-show="previousRevision"]:visible');
-    };
-
-    beforeEach(function() {
-    });
+    beforeEach(function() {});
 
     it("should mark last commit as active when repository is just loaded", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
         sleep(0.8)
-        expect(usingCommitsList().element("a:visible:first").text()).toEqual("428f2b563663315df4f235ca19cef4bdcf82e2ab");
-        expect(usingCommitsList().element("span:visible:first").text()).toEqual("15c1fe392942b70e456f10afbdfd9c3329249a43");
+        expect(commitsBrowsingView.firstNotChosenRevision().text()).toEqual("428f2b563663315df4f235ca19cef4bdcf82e2ab");
+        expect(commitsBrowsingView.chosenRevision().text()).toEqual("15c1fe392942b70e456f10afbdfd9c3329249a43");
     });
 
     it("should display link next commit when first commit is selected", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
-        expect(visibleNextLink().count()).toBe(1);
-        expect(visiblePrevLink().count()).toBe(0);
+        expect(commitsBrowsingView.nextButton().attr('disabled')).toBeFalsy();
+        expect(commitsBrowsingView.previousButton().attr('disabled')).toBeTruthy();
     });
 
     it("should display commit id and autor name when switching commits", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
 
         var firstAvailableLink = function() {return element(".commits a:visible")};
-        var activeLink = function(){return element(".commits .active:visible")};
+        var activeLink = function(){return element(".commits .chosen.commit-sha:visible")};
 
         activeBeforeClick = activeLink().text();
         activeAfterClick =  firstAvailableLink().text()
@@ -84,30 +67,50 @@ describe("Case of navigation thru commits", function() {
         expect(presentationView.visibleFiles().text()).not().toContain("bla bla bla");
     });
 
+    // Use-case-viewpoints
 
     var presentationView = new function() {
 
-        var filesList = function() {return using("#filesList")};
+        var base = function() {return using("#filesList")};
 
         this.visibleFileTitles = function() {
-            return filesList().element(".accordion-toggle:visible");
+            return base().element(".accordion-toggle:visible");
         };
 
         this.firstFileTitle = function() {
-            return filesList().element("a.accordion-toggle:first");
+            return base().element("a.accordion-toggle:first");
         };
 
         this.fileTitles = function() {
-            return filesList().element("a.accordion-toggle");
+            return base().element("a.accordion-toggle");
         }
 
         this.visibleFiles = function() {
-            return filesList().element(".in pre");
+            return base().element(".in pre");
         };
 
         this.collapsedFiles = function() {
-            return filesList().element(".accordion-body.collapse");
+            return base().element(".accordion-body.collapse");
+        };
+    }
+
+    var commitsBrowsingView = new function() {
+        var base = function() {return using('.commits', "Commits navigation base")};
+
+        this.nextButton = function() {
+            return base().element('.btn:contains("Next")');
         };
 
+        this.previousButton = function() {
+            return base().element('.btn:contains("Previous")');
+        };
+
+        this.firstNotChosenRevision = function() {
+            return base().element(".not-chosen.commit-sha:visible:first");
+        };
+
+        this.chosenRevision = function() {
+            return base().element(".chosen.commit-sha:visible:first");
+        }
     }
 })

@@ -25,3 +25,10 @@ pre code.rm {
   font-weight: normal;
   color: #fff;
 }
+
+.commit-txt {
+  float: left;
+  margin-right:5px;
+  color:#999;
+}
+
