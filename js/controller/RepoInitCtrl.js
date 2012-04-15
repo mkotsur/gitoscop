@@ -20,6 +20,6 @@ function RepoInitCtrl($scope, $location, repoUrlTransformer, repoResource) {
     };
 
     $scope.redirectToMainPage = function () {
-       window.location = "/main.html?url=" + $scope.repo.url;
-    }
+        $location.path('/slideshow').search('url', $scope.repo.url).replace();
+    };
 }

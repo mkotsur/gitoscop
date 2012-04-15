@@ -16,11 +16,14 @@ DONE: fix image 404 (avatar)
 DONE: improve e2e tests coverage
 DONE: add links to navigate thru commits
 DONE: rename all controllers to Ctrl suffix
-TODO: URLs: / and /index.html should work identically with good resolution of # value
+DONE: URLs: / and /index.html should work identically with good resolution of # value
+DONE: write test on diff appearance
 TODO: add keyboard navigation thru commits
 TODO: refactor usage of repository resource
 TODO: make lines marked @@ in grey color
 TODO: figure out what happens when commit list is not complete
+TODO: collapses conflict with hash url. fix it.
+TODO: decide what to do when URL is cleaned
 -->
 
 <html ng-app="MainModuleDev">
@@ -31,31 +34,33 @@ TODO: figure out what happens when commit list is not complete
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" href="./css/bootstrap/bootstrap.css" />
 
-    <link rel="stylesheet" href="/css/gitoscope.css" />
+    <link rel="stylesheet" href="./css/gitoscope.css" />
 
-    <script src="/js/lib/angular-1.0.0rc3.js"></script>
-    <script src="/js/lib/ngResource/resource.js"></script>
-    <script src="/js/lib/jquery-1.7.1.js"></script>
+    <script src="./js/lib/angular-1.0.0rc5.js"></script>
+    <script src="./js/lib/angular-resource.js"></script>
+    <script src="./js/lib/angular-sanitize.js"></script>
+    <script src="./js/lib/jquery-1.7.1.js"></script>
     <script src="http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js"></script>
-    <script src="/js/lib/underscore-min.js"></script>
-    <script src="/js/lib/bootstrap/bootstrap-button.js"></script>
-    <script src="/js/lib/bootstrap/bootstrap-tooltip.js"></script>
+    <script src="./js/lib/underscore-min.js"></script>
+    <script src="./js/lib/bootstrap/bootstrap-button.js"></script>
+    <script src="./js/lib/bootstrap/bootstrap-tooltip.js"></script>
+    <script src="./js/lib/bootstrap/bootstrap-collapse.js"></script>
 
-    <script src="/js/service/repoUrlTransformer.js"></script>
-    <script src="/js/service/repoResource.js"></script>
-    <script src="/js/service/patchProcessor.js"></script>
+    <script src="./js/service/repoUrlTransformer.js"></script>
+    <script src="./js/service/repoResource.js"></script>
+    <script src="./js/service/patchProcessor.js"></script>
 
 
-    <script src="/js/controller/RepoInitCtrl.js"></script>
-    <script src="/js/controller/DIffCtrl.js"></script>
-    <script src="/js/controller/CommitsNavigatorCtrl.js"></script>
+    <script src="./js/controller/RepoInitCtrl.js"></script>
+    <script src="./js/controller/DIffCtrl.js"></script>
+    <script src="./js/controller/CommitsNavigatorCtrl.js"></script>
 
-    <script src="/js/spec/mocks/commits.js"></script>
-    <script src="/js/spec/mocks/repo.js"></script>
+    <script src="./js/spec/mocks/commits.js"></script>
+    <script src="./js/spec/mocks/repo.js"></script>
 
-    <script src="/js/module/MainModule.js"></script>
+    <script src="./js/module/MainModule.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Chau+Philomene+One' rel='stylesheet' type='text/css'>
 
 
@@ -67,27 +72,16 @@ TODO: figure out what happens when commit list is not complete
         }
     </style>
 
-    <script src="/js/lib/angular-mocks.js"></script>
+    <script src="./js/lib/angular-mocks.js"></script>
 
 </head>
 <body>
 
-<div class="container-fluid" ng-init="repo={}; slideshow={};">
-    <div class="row-fluid">
+<script type="text/ng-template" src="./js/templates/index.html"></script>
+<script type="text/ng-template" src="./js/templates/slideshow.html"></script>
 
-        <div class="span12" style="top:30%;position:absolute; text-align: center;">
-            <div ng-controller="RepoInitCtrl">
-                <div style="margin: 20px auto 15px auto">
-                    <img src="/images/tv.png" alt="logo"/>
-                    <h2 class="header">Enter Repository Url:</h2>
-                </div>
-                <div>
-                    <input class="input-xlarge" type="text" name="url" ng-model="repo.url" ng-model-instant />
-                    <input type="button" ng-click="redirectToMainPage()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty" style="vertical-align:top;margin-left: 5px;"/>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container-fluid" ng-init="repo={}; slideshow={};">
+    <div class="row-fluid ng-view"></div>
 </div>
 
 </body>

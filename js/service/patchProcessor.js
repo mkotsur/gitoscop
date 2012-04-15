@@ -1,4 +1,4 @@
-var PatchProcessorFactory = function($sanitize) { return function(diff) {
+var PatchProcessorFactory = function() { return function(diff) {
 
     if (!diff) {
       return;
@@ -17,4 +17,4 @@ var PatchProcessorFactory = function($sanitize) { return function(diff) {
     return '<pre>\n' + code + '</pre>';
 }};
 
-PatchProcessorFactory.$inject = ['$sanitize'];
+PatchProcessorFactory.$inject = [];
