@@ -28,8 +28,8 @@
                 <ul ng-repeat="commit in repo.commits">
                     <li>
                         {{commit.author.login}}:
-                        <span style="background-color: red" ng-show="slideshow.pointer == commit.sha">{{commit.sha}}</span>
-                        <span ng-hide="slideshow.pointer == commit.sha"><a href="#" ng-click="slideshow.pointer=commit.sha">{{commit.sha}}</a></span>
+                        <span class="active" style="background-color: red" ng-show="slideshow.pointer == commit.sha">{{commit.sha}}</span>
+                        <span ng-hide="slideshow.pointer == commit.sha"><a ng-click="slideshow.pointer=commit.sha">{{commit.sha}}</a></span>
                     </li>
                 </ul>
             </li>
@@ -45,37 +45,22 @@
 
                     <a class="brand" href="#">{{slideshow.commit.commit.sha}} by {{slideshow.commit.commit.author.name}} {{slideshow.commit.commit.author.date}}</a>
 
-                <div ng-show="slideshow.commit" class="nav" style="width:100%">
+                    <div ng-show="slideshow.commit" class="nav" style="width:100%">
 
-                    <h3>{{slideshow.commit.sha}}</h3>
-                    <h4>{{slideshow.commit.commit.message}}</h4>
-                    <br/>
-                </div>
-<!--                            <div>
-                      <ul class="nav">
-                          <li ng-repeat="file in slideshow.commit.files"><a href="#{{file.filename}}">{{file.filename}}</a></li>
-                          <!--<li class="dropdown">-->
-                              <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
-                              <!--<ul class="dropdown-menu">-->
-                                  <!--<li><a href="#one">one</a></li>-->
-                                  <!--<li><a href="#two">two</a></li>-->
-                                  <!--<li class="divider"></li>-->
-                                  <!--<li><a href="#three">three</a></li>-->
-                              <!--</ul>-->
-                          <!--</li>
-</ul>
-
-                 </div>-->
+                        <h3>{{slideshow.commit.sha}}</h3>
+                        <h4>{{slideshow.commit.commit.message}}</h4>
+                        <br/>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="accordion" id="filesList">
             <div class="accordion-group" ng-repeat="file in slideshow.commit.files">
-            <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#filesList" href="#{{escape(file.filename)}}">
-              {{file.filename}}: {{file.status}}
-        </a>
-            </div>
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-target="#{{escape(file.filename)}}">
+                        {{file.filename}}: {{file.status}}
+                    </a>
+                </div>
                 <div class="accordion-body in"  id="{{escape(file.filename)}}" >
                     <div class="accordion-inner" ng-bind-html-unsafe="file.patch|diffToHtml"></div>
                 </div>

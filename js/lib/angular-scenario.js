@@ -9784,6 +9784,9 @@ function size(obj, ownPropsOnly) {
 
 
 function includes(array, obj) {
+    if (obj instanceof angular.scenario.Future) {
+        obj = obj.value;
+    }
   return indexOf(array, obj) != -1;
 }
 

@@ -17,11 +17,13 @@ DONE: improve e2e tests coverage
 DONE: add links to navigate thru commits
 DONE: rename all controllers to Ctrl suffix
 DONE: URLs: / and /index.html should work identically with good resolution of # value
-TODO: write test on diff appearance
+DONE: write test on diff appearance
 TODO: add keyboard navigation thru commits
 TODO: refactor usage of repository resource
 TODO: make lines marked @@ in grey color
 TODO: figure out what happens when commit list is not complete
+TODO: collapses conflict with hash url. fix it.
+TODO: decide what to do when URL is cleaned
 -->
 
 <html ng-app="MainModuleDev">
@@ -44,6 +46,7 @@ TODO: figure out what happens when commit list is not complete
     <script src="./js/lib/underscore-min.js"></script>
     <script src="./js/lib/bootstrap/bootstrap-button.js"></script>
     <script src="./js/lib/bootstrap/bootstrap-tooltip.js"></script>
+    <script src="./js/lib/bootstrap/bootstrap-collapse.js"></script>
 
     <script src="./js/service/repoUrlTransformer.js"></script>
     <script src="./js/service/repoResource.js"></script>
