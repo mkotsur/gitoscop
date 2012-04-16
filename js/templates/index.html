@@ -3,10 +3,12 @@
         <div style="margin: 20px auto 15px auto">
             <img src="./images/tv.png" alt="logo"/>
             <h2 class="header">Enter Repository Url:</h2>
+            <h5><small>For example: https://github.com/angular/angular.js</small></h5>
+
         </div>
         <div>
             <input class="input-xlarge" type="text" name="url" ng-model="repo.url" ng-model-instant />
-            <input type="button" ng-click="redirectToMainPage()" ng-disabled="!repo.apiUrl" class="btn" value="Use reposiroty" style="vertical-align:top;margin-left: 5px;"/>
+            <input type="button" ng-click="redirectToMainPage()" ng-disabled="!repo.apiUrl" class="btn" value="Use repository" style="vertical-align:top;margin-left: 5px;"/>
         </div>
     </div>
 </div>

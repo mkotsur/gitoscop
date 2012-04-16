@@ -8,6 +8,29 @@ angular.module('MainModule', ['ngResource', 'ngSanitize'])
 //        $locationProvider.html5Mode(true);
         $routeProvider.when('/', {template: './js/templates/index.html', controller:RepoInitCtrl});
         $routeProvider.when('/slideshow', {template: './js/templates/slideshow.html'});
+    })
+    .filter('substr', function() {
+        return function(i, s, e) {
+            return i.substr(s, e);
+        }
+    })
+    .filter('asId', function() {
+        return function(v) {
+            return v.replace(/[\/\.\s]/g, "_");
+        }
+    })
+    .directive('gsCommit', function() {
+        return function(scope, element, attrs) {
+            scope.$watch('slideshow.pointer', function() {
+                if (scope.commit.sha == scope.slideshow.pointer) {
+                    element.removeClass("not-chosen");
+                    element.addClass("chosen");
+                } else {
+                    element.removeClass("chosen");
+                    element.addClass("not-chosen");
+                }
+            })
+        }
     });
 
 

@@ -11,6 +11,12 @@ pre code.rm {
   width: 100%;
 }
 
+.header {
+    font-family: 'Chau Philomene One', sans-serif;
+    font-size: 35px;
+    font-weight: normal;
+}
+
 .fileList .nav li {
    float: none;
    padding: 0;
@@ -30,5 +36,30 @@ pre code.rm {
   float: left;
   margin-right:5px;
   color:#999;
+  display: block;
+  width: 130px;
+}
+
+.commit-sha {
+    float: left;
+}
+
+.chosen .commit-sha a {
+    color: #999;
+    cursor: default;
+    text-decoration: none;
+}
+
+.ng-view {
+    padding-top: 15px;
+}
+
+#NavList .navbar-inner {
+    padding-bottom: 4px;
+}
+
+pre.commit-message {
+    background-color: #000000;
+    color:#ffffff;
 }
 

@@ -9,7 +9,4 @@ function DiffCtrl($scope, $element, $sanitize, repoResource, patchProcessor) {
         }
     });
 
-    $scope.escape = function(name) {
-      return name.replace(/[\/\.\s]/g, "_")
-    }
 }

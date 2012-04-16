@@ -5,8 +5,8 @@ describe("Case of navigation thru commits", function() {
     it("should mark last commit as active when repository is just loaded", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
         sleep(0.8)
-        expect(commitsBrowsingView.firstNotChosenRevision().text()).toEqual("428f2b563663315df4f235ca19cef4bdcf82e2ab");
-        expect(commitsBrowsingView.chosenRevision().text()).toEqual("15c1fe392942b70e456f10afbdfd9c3329249a43");
+        expect(commitsBrowsingView.firstNotChosenRevision().text()).toContain("428f2b563");
+        expect(commitsBrowsingView.chosenRevision().text()).toContain("15c1fe3929");
     });
 
     it("should display link next commit when first commit is selected", function() {
@@ -18,21 +18,18 @@ describe("Case of navigation thru commits", function() {
     it("should display commit id and autor name when switching commits", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
 
-        var firstAvailableLink = function() {return element(".commits a:visible")};
-        var activeLink = function(){return element(".commits .chosen.commit-sha:visible")};
+        activeBeforeClick = commitsBrowsingView.chosenRevision().text();
+        activeAfterClick =  commitsBrowsingView.firstNotChosenRevision().text()
 
-        activeBeforeClick = activeLink().text();
-        activeAfterClick =  firstAvailableLink().text()
-
-        expect(element('#NavList').text()).toContain(activeLink().text());
+        expect(element('#NavList').text()).toContain(commitsBrowsingView.chosenRevision().text());
         expect(element('#NavList').text()).toContain("Author 1");
-        firstAvailableLink().click();
+        commitsBrowsingView.firstNotChosenRevision().click();
 
-        expect(activeLink().text()).toContain(activeAfterClick);
+        expect(commitsBrowsingView.chosenRevision().text()).toContain(activeAfterClick);
         expect(activeBeforeClick).not().toContain(activeAfterClick);
 
-        expect(firstAvailableLink().text()).toContain(activeBeforeClick);
-        expect(element('#NavList').text()).toContain(activeLink().text());
+        expect(commitsBrowsingView.firstNotChosenRevision().text()).toContain(activeBeforeClick);
+        expect(element('#NavList').text()).toContain(commitsBrowsingView.chosenRevision().text());
         expect(element('#NavList').text()).toContain("Author 2");
     });
 
@@ -106,11 +103,11 @@ describe("Case of navigation thru commits", function() {
         };
 
         this.firstNotChosenRevision = function() {
-            return base().element(".not-chosen.commit-sha:visible:first");
+            return base().element(".not-chosen .commit-sha a:visible:first");
         };
 
         this.chosenRevision = function() {
-            return base().element(".chosen.commit-sha:visible:first");
+            return base().element(".chosen .commit-sha:visible:first");
         }
     }
 })

@@ -17,7 +17,7 @@ describe("Repository linking case of app", function() {
 
         expect(repeater(".commits li", "List of commits").count()).toEqual(2);
 
-        expect(using('.commits', "List of commits").element("b.commit-sha:first").text()).toEqual("15c1fe392942b70e456f10afbdfd9c3329249a43");
+        expect(using('.commits', "List of commits").element(".commit-sha:first").text()).toContain("15c1fe3929");
     });
 
     it("should be able to recognize /index.html url", function() {

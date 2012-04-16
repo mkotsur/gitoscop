@@ -48,5 +48,5 @@ function CommitsNavigatorCtrl($scope) {
             }
         });
         return commitIndex;
-    }
+    };
 }
