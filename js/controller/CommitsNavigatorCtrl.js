@@ -9,6 +9,24 @@ function CommitsNavigatorCtrl($scope) {
         }
     });
 
+    var prevPressedAction = function() {
+        $scope.$apply(function() {
+            $scope.goNext();
+        });
+    };
+
+    var nextPressedAction = function() {
+        $scope.$apply(function() {
+            $scope.goPrevious();
+        });
+    };
+
+    shortcut.add("Alt+Right", nextPressedAction);
+    shortcut.add("Alt+Up", nextPressedAction);
+    shortcut.add("Alt+Left", prevPressedAction);
+    shortcut.add("Alt+Down", prevPressedAction);
+
+
     $scope.$watch('slideshow.pointer', function() {
         if (!$scope.slideshow.pointer || !$scope.repo.commits) {
             return;
@@ -31,12 +49,16 @@ function CommitsNavigatorCtrl($scope) {
     });
 
     $scope.goNext = function() {
-        $scope.slideshow.pointer = $scope.repo.commits[getCurrentCommitIndex() + 1].sha;
+        if ($scope.repo.commits[getCurrentCommitIndex() + 1]) {
+            $scope.slideshow.pointer = $scope.repo.commits[getCurrentCommitIndex() + 1].sha;
+        }
         return $scope;
     };
 
     $scope.goPrevious = function() {
-        $scope.slideshow.pointer = $scope.repo.commits[getCurrentCommitIndex() - 1].sha;
+        if ($scope.repo.commits[getCurrentCommitIndex() - 1]) {
+            $scope.slideshow.pointer = $scope.repo.commits[getCurrentCommitIndex() - 1].sha;
+        }
         return $scope;
     };
 

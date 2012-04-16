@@ -19,9 +19,12 @@
         </div>
 
         <div style="float: left;" class="commits">
-            <div ng-controller="CommitsNavigatorCtrl" class="button-navigation">
+            <div class="button-navigation">
                 <button class="btn btn-inverse" ng-click="goPrevious()" ng-disabled="!previousRevision" style="width:80px">Previous</button>
                 <button class="btn btn-info" ng-click="goNext()" ng-disabled="!nextRevision" style="width:80px;margin-left:5px">Next</button>
+                <h5>
+                    <small>Tip: Navigate with <b>Alt</b> and <b>&lt;-</b> arrows <b>-&gt;</b> shortcuts.</small>
+                </h5>
             </div>
             <h4 style="margin-top: 10px;"> Recent commits:</h4>
             <ul class="nav nav-list">
