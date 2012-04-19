@@ -7,10 +7,6 @@ This is a pet project which aimed to promote http://angularjs.org. Feel free to 
 * My blog: http://sotomajor.org.ua
 * AngularJS: http://angularjs.org
 
-Compiling
----------
-    rake compile
-
 Running Tests
 -------------
     Unit tests: http://127.0.0.1/js/SpecRunner.html
