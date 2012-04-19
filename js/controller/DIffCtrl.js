@@ -1,10 +1,12 @@
-function DiffCtrl($scope, $element, $sanitize, repoResource, patchProcessor) {
+function DiffCtrl($scope, $resource, Commit) {
 
     $scope.$watch('slideshow.pointer', function() {
         if ($scope.slideshow.pointer) {
-            $scope.slideshow.commit = repoResource.commitByUrl(
-                $scope.repo.apiUrl + "/commits/" + $scope.slideshow.pointer
-            ).get();
+            $scope.slideshow.commit = Commit.get({
+                    'user': $scope.repo.user,
+                    'project': $scope.repo.project,
+                    'commit': $scope.slideshow.pointer
+            });
         }
     });
 

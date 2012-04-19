@@ -2,7 +2,7 @@
     <div>
         <div>
             <input type="text" ng-model="repo.url" ng-model-instant />
-            <input type="button" ng-click="getRepoData()" ng-disabled="!repo.apiUrl" class="btn" value="Use repository" style="vertical-align:top;"/>
+            <input type="button" ng-click="getRepoData()" ng-disabled="!repo.id" class="btn" value="Use repository" style="vertical-align:top;"/>
         </div>
     </div>
     <div ng-controller="CommitsNavigatorCtrl" ng-show="repo.data.url">
@@ -12,7 +12,7 @@
         </div>
         <div class="span2">
             <dl style="float: left;">
-                <dt>Api URL:</dt> <dd style="width:25em">{{repo.apiUrl}}</dd>
+                <dt>Api URL:</dt> <dd style="width:25em" ng-bind="repo.id"></dd>
                 <dt>Last updated:</dt><dd> {{repo.data.updated_at}}</dd>
                 <dt>Created at:</dt><dd> {{repo.data.created_at}}</dd>
             </dl>

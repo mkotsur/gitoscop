@@ -9,11 +9,9 @@ describe("Repository linking case of app", function() {
 
     it("should open the page, enter repo url and download repo information", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
-
         expect(button.attr('disabled')).toBeFalsy();
-        expect(binding('repo.apiUrl')).toEqual('https://api.github.com/repos/e2e/test');
 
-        expect(button.attr('disabled')).toBeFalsy();
+        expect(binding('repo.id')).toEqual('e2e/test');
 
         expect(repeater(".commits li", "List of commits").count()).toEqual(2);
 
@@ -24,7 +22,7 @@ describe("Repository linking case of app", function() {
         browser().navigateTo("/index.html#!/slideshow?url=https://github.com/e2e/test");
 
         expect(button.attr('disabled')).toBeFalsy();
-        expect(binding('repo.apiUrl')).toEqual('https://api.github.com/repos/e2e/test');
+        expect(binding('repo.id')).toEqual('e2e/test');
     })
 
 });

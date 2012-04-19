@@ -16,5 +16,3 @@ var PatchProcessorFactory = function() { return function(diff) {
         });
     return '<pre>\n' + code + '</pre>';
 }};
-
-PatchProcessorFactory.$inject = [];

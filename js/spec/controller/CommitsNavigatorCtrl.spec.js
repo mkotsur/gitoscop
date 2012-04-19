@@ -7,6 +7,7 @@ describe("Commits navigation controller test", function() {
     var fourCommitsMock = [{'sha': 'first-commit-hash'}, {'sha': 'second-commit-hash'}, {'sha': 'third-commit-hash'}, {'sha': 'fourth-commit-hash'}];
 
     beforeEach(function() {
+        module('MainModule');
         inject(function($rootScope) {
             $rootScope.repo = {};
             $rootScope.slideshow = {};

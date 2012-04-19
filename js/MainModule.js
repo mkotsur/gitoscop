@@ -1,7 +1,10 @@
 angular.module('MainModule', ['ngResource', 'ngSanitize'])
     .factory('repoUrlTransformer', RepoUrlTransformerFactory)
     .factory('patchProcessor', PatchProcessorFactory)
-    .factory('repoResource', ["$resource", RepoResourceFactory])
+    .factory('Commit', ['$resource', CommitFactory])
+    .factory('Commits', ['$resource', CommitsFactory])
+    .factory('Repo', ['$resource', RepoFactory])
+    .factory('shortcutBinder', function() {return shortcut;})
     .filter('diffToHtml', PatchProcessorFactory)
     .config(function($locationProvider, $routeProvider) {
         $locationProvider.hashPrefix("!");

@@ -1,4 +1,4 @@
-function CommitsNavigatorCtrl($scope) {
+function CommitsNavigatorCtrl($scope, shortcutBinder) {
 
     $scope.nextRevision = null;
     $scope.previousRevision = null;
@@ -21,10 +21,10 @@ function CommitsNavigatorCtrl($scope) {
         });
     };
 
-    shortcut.add("Alt+Right", nextPressedAction);
-    shortcut.add("Alt+Up", nextPressedAction);
-    shortcut.add("Alt+Left", prevPressedAction);
-    shortcut.add("Alt+Down", prevPressedAction);
+    shortcutBinder.add("Alt+Right", nextPressedAction);
+    shortcutBinder.add("Alt+Up", nextPressedAction);
+    shortcutBinder.add("Alt+Left", prevPressedAction);
+    shortcutBinder.add("Alt+Down", prevPressedAction);
 
 
     $scope.$watch('slideshow.pointer', function() {

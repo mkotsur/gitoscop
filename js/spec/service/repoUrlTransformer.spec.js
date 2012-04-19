@@ -1,6 +1,7 @@
 describe("Repo URL transformer test", function() {
 
     var repoUrlTransformer;
+    var repoId = 'mkotsur/angular.js';
     var repoUrlInApiForm = "https://api.github.com/repos/mkotsur/angular.js";
     var repoUrlInHttpsForm = "https://github.com/mkotsur/angular.js";
     var repoUrlInGitForm = "https://github.com/mkotsur/angular.js.git";
@@ -13,32 +14,28 @@ describe("Repo URL transformer test", function() {
         })
     });
 
-    it ("should run the test", function() {
-        expect(true).toBeTruthy();
+    it ('should leave repo id unchanged', function() {
+        expect(repoUrlTransformer.parseId(repoId))
+                    .toEqual(repoId);
     });
 
-    it("should inject repo url transformer", function() {
-        expect(repoUrlTransformer).toBeDefined();
+    it("should handle api URL", function() {
+        expect(repoUrlTransformer.parseId(repoUrlInApiForm))
+            .toEqual(repoId);
     });
 
-    it("should leave api URL unchanged", function() {
-        expect(repoUrlTransformer.toRepoApiResource(repoUrlInApiForm))
-            .toEqual(repoUrlInApiForm);
+    it("should handle https:// URL", function() {
+        expect(repoUrlTransformer.parseId(repoUrlInHttpsForm))
+            .toEqual(repoId);
     });
 
-    it("should transform https URL to API url", function() {
-        expect(repoUrlTransformer.toRepoApiResource(repoUrlInHttpsForm))
-            .toEqual(repoUrlInApiForm);
+    it("should handle git:// URL", function() {
+        expect(repoUrlTransformer.parseId(repoUrlInGitForm))
+            .toEqual(repoId);
     });
 
-    it("should transform https URL to API url", function() {
-        expect(repoUrlTransformer.toRepoApiResource(repoUrlInGitForm))
-            .toEqual(repoUrlInApiForm);
-    });
-
-    it("should work if URL is undefinde", function() {
-        expect(repoUrlTransformer.toRepoApiResource())
-                    .toBeUndefined();
+    it("should work if URL is undefined", function() {
+        expect(repoUrlTransformer.parseId()).toBeUndefined();
     })
 
 
