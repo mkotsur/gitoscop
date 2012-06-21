@@ -18,18 +18,34 @@ describe("Case of navigation thru commits", function() {
     it("should display commit id and autor name when switching commits", function() {
         browser().navigateTo("/#!/slideshow?url=https://github.com/e2e/test");
 
-        activeBeforeClick = commitsBrowsingView.chosenRevision().text();
-        activeAfterClick =  commitsBrowsingView.firstNotChosenRevision().text()
+        firstRevision = commitsBrowsingView.chosenRevision().text();
+        secondRevision =  commitsBrowsingView.firstNotChosenRevision().text()
 
-        expect(element('#NavList').text()).toContain(commitsBrowsingView.chosenRevision().text());
+
+        firstRevision.execute(function(e, r) {
+            expect(element('#NavList').text()).toContain(r);
+        })
+
         expect(element('#NavList').text()).toContain("Author 1");
+
         commitsBrowsingView.firstNotChosenRevision().click();
 
-        expect(commitsBrowsingView.chosenRevision().text()).toContain(activeAfterClick);
-        expect(activeBeforeClick).not().toContain(activeAfterClick);
+        secondRevision.execute(function(e,r) {
+            expect(commitsBrowsingView.chosenRevision().text()).toContain(r)
+            expect(firstRevision).not().toContain(r);
+        })
 
-        expect(commitsBrowsingView.firstNotChosenRevision().text()).toContain(activeBeforeClick);
-        expect(element('#NavList').text()).toContain(commitsBrowsingView.chosenRevision().text());
+
+        firstRevision.execute(function(e,r) {
+            expect(commitsBrowsingView.firstNotChosenRevision().text()).toContain(r);
+        });
+
+        secondRevision.execute(function(e, r) {
+            console.log('Chosen', r)
+            expect(commitsBrowsingView.chosenRevision().text()).toEqual(r);
+            expect(element('#NavList').text()).toContain(r);
+        });
+
         expect(element('#NavList').text()).toContain("Author 2");
     });
 

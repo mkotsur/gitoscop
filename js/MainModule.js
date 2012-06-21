@@ -9,8 +9,8 @@ angular.module('MainModule', ['ngResource', 'ngSanitize'])
     .config(function($locationProvider, $routeProvider) {
         $locationProvider.hashPrefix("!");
 //        $locationProvider.html5Mode(true);
-        $routeProvider.when('/', {template: './js/templates/index.html', controller:RepoInitCtrl});
-        $routeProvider.when('/slideshow', {template: './js/templates/slideshow.html'});
+        $routeProvider.when('/', {templateUrl: './js/templates/index.html', controller:RepoInitCtrl});
+        $routeProvider.when('/slideshow', {templateUrl: './js/templates/slideshow.html'});
     })
     .filter('substr', function() {
         return function(i, s, e) {
