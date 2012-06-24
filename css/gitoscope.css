@@ -50,6 +50,10 @@ pre code.rm {
     text-decoration: none;
 }
 
+.commit-sha.ignored a {
+    text-decoration: line-through;
+}
+
 .ng-view {
     padding-top: 15px;
 }

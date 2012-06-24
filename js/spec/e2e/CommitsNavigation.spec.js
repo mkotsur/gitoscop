@@ -23,7 +23,7 @@ describe("Case of navigation thru commits", function() {
 
 
         firstRevision.execute(function(e, r) {
-            expect(element('#NavList').text()).toContain(r);
+            expect(element('#NavList .sha').text()).toContain(r.replace(/[\s ]*/g, ''));
         })
 
         expect(element('#NavList').text()).toContain("Author 1");
@@ -37,13 +37,12 @@ describe("Case of navigation thru commits", function() {
 
 
         firstRevision.execute(function(e,r) {
-            expect(commitsBrowsingView.firstNotChosenRevision().text()).toContain(r);
+            expect(commitsBrowsingView.firstNotChosenRevision().text()).toContain(r.replace(/[\s ]*/g, ''));
         });
 
         secondRevision.execute(function(e, r) {
-            console.log('Chosen', r)
             expect(commitsBrowsingView.chosenRevision().text()).toEqual(r);
-            expect(element('#NavList').text()).toContain(r);
+            expect(element('#NavList .sha').text()).toContain(r.replace(/[\s ]*/g, ''));
         });
 
         expect(element('#NavList').text()).toContain("Author 2");
@@ -123,7 +122,7 @@ describe("Case of navigation thru commits", function() {
         };
 
         this.chosenRevision = function() {
-            return base().element(".chosen .commit-sha:visible:first");
+            return base().element(".chosen .commit-sha:visible:first a");
         }
     }
 })

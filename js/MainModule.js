@@ -1,6 +1,7 @@
 angular.module('MainModule', ['ngResource', 'ngSanitize'])
     .factory('repoUrlTransformer', RepoUrlTransformerFactory)
     .factory('patchProcessor', PatchProcessorFactory)
+    .factory('isIgnored', isIgnoredFactory)
     .factory('Commit', ['$resource', CommitFactory])
     .factory('Commits', ['$resource', CommitsFactory])
     .factory('Repo', ['$resource', RepoFactory])
@@ -17,9 +18,19 @@ angular.module('MainModule', ['ngResource', 'ngSanitize'])
             return i.substr(s, e);
         }
     })
+    .filter('trenary', function() {
+        return function(i, s, e) {
+            return i?s:e;
+        }
+    })
     .filter('asId', function() {
         return function(v) {
             return v.replace(/[\/\.\s]/g, "_");
+        }
+    })
+    .filter('ignored', function(isIgnored) {
+        return function(v) {
+            return isIgnored(v);
         }
     })
     .directive('gsCommit', function() {

@@ -30,7 +30,9 @@
             <ul class="nav nav-list">
                 <li ng-repeat="commit in repo.commits" gs-commit>
                     <span class="commit-txt"> {{commit.commit.author.name}}:</span>
-                    <span class="commit-sha"><a ng-click="slideshow.pointer=commit.sha">{{commit.sha|substr:0:10}}</a></span>
+                    <span class="commit-sha {{commit.commit.message|ignored|trenary:'ignored':''}}" >
+                        <a ng-click="slideshow.pointer=commit.sha" title="{{commit.commit.message}}">{{commit.sha|substr:0:10}}</a>
+                    </span>
                 </li>
             </ul>
         </div>
@@ -45,7 +47,7 @@
 
 
                     <div ng-show="slideshow.commit" class="nav" style="width:100%">
-                        <h3>{{slideshow.commit.sha}}</h3>
+                        <h3 class="sha">{{slideshow.commit.sha}}</h3>
                         <pre class="commit-message">{{slideshow.commit.commit.message}}</pre>
                     </div>
 

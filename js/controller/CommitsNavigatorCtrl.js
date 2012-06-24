@@ -1,11 +1,19 @@
-function CommitsNavigatorCtrl($scope, shortcutBinder) {
+function CommitsNavigatorCtrl($scope, shortcutBinder, isIgnored) {
 
     $scope.nextRevision = null;
     $scope.previousRevision = null;
 
     $scope.$watch('repo.commits.length > 1', function() {
-        if ($scope.repo.commits && $scope.repo.commits.length > 0) {
-            $scope.slideshow.pointer = $scope.repo.commits[0].sha;
+        if (!$scope.repo.commits || $scope.repo.commits.length == 0) {
+            return
+        }
+
+        for (i = 0; i < $scope.repo.commits.length; i++) {
+            v = $scope.repo.commits[i];
+            if (!isIgnored(v.commit.message)) {
+                $scope.slideshow.pointer = v.sha;
+                break;
+            }
         }
     });
 
@@ -49,16 +57,24 @@ function CommitsNavigatorCtrl($scope, shortcutBinder) {
     });
 
     $scope.goNext = function() {
-        if ($scope.repo.commits[getCurrentCommitIndex() + 1]) {
-            $scope.slideshow.pointer = $scope.repo.commits[getCurrentCommitIndex() + 1].sha;
+        for (i = getCurrentCommitIndex() + 1; i < $scope.repo.commits.length; i++) {
+            if (!isIgnored($scope.repo.commits[i].commit.message)) {
+                $scope.slideshow.pointer = $scope.repo.commits[i].sha;
+                break;
+            }
         }
+
         return $scope;
     };
 
     $scope.goPrevious = function() {
-        if ($scope.repo.commits[getCurrentCommitIndex() - 1]) {
-            $scope.slideshow.pointer = $scope.repo.commits[getCurrentCommitIndex() - 1].sha;
+        for (i = getCurrentCommitIndex() - 1; i >= 0; i--) {
+            if (!isIgnored($scope.repo.commits[i].commit.message)) {
+                $scope.slideshow.pointer = $scope.repo.commits[i].sha;
+                break;
+            }
         }
+
         return $scope;
     };
 
@@ -71,4 +87,5 @@ function CommitsNavigatorCtrl($scope, shortcutBinder) {
         });
         return commitIndex;
     };
+
 }
